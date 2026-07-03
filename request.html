@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Request Your Free Audit — Local Business AI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body { font-family: -apple-system, sans-serif; max-width: 600px; margin: 0 auto; padding: 40px 24px; line-height: 1.6; color: #1a1a2e; }
+  h1 { font-size: 32px; }
+  .accent { color: #ff6b00; }
+  label { display: block; margin: 16px 0 4px; font-weight: 600; }
+  input, textarea, select { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; box-sizing: border-box; }
+  button { background: #ff6b00; color: white; padding: 14px 28px; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 16px; }
+  .note { background: #fff8f0; border-left: 4px solid #ff6b00; padding: 12px; margin: 16px 0; }
+  .small { font-size: 13px; color: #7a7a8c; }
+</style>
+</head>
+<body>
+<h1>Request your <span class="accent">free audit</span></h1>
+<p>5-min audit of your Google listing + website. Free. No pitch.</p>
+
+<div class="note">
+<strong>Already in the index?</strong> <a href="/">Search here</a> — type your biz name.
+</div>
+
+<form id="audit-form" action="https://api.github.com/repos/amirguliyevai/local-business-audits/issues" method="post">
+  <label for="biz">Business name *</label>
+  <input id="biz" name="title" required placeholder="e.g. Riverside Plumbing">
+
+  <label for="email">Your email *</label>
+  <input id="email" type="email" required name="email" placeholder="you@yourbiz.com">
+
+  <label for="city">City + state *</label>
+  <input id="city" required name="city" placeholder="Austin, TX">
+
+  <label for="industry">Industry</label>
+  <select id="industry" name="industry">
+    <option>Plumbing / HVAC</option>
+    <option>Auto repair / dealer</option>
+    <option>Real estate</option>
+    <option>Construction / contractor</option>
+    <option>Healthcare / dental</option>
+    <option>Restaurant / food</option>
+    <option>Retail / e-com</option>
+    <option>Other</option>
+  </select>
+
+  <label for="website">Website (optional)</label>
+  <input id="website" name="website" placeholder="https://yourbiz.com">
+
+  <label for="notes">Anything specific? (optional)</label>
+  <textarea id="notes" name="notes" rows="3" placeholder="e.g. just redid the site, want feedback"></textarea>
+
+  <button type="submit">Send me my audit →</button>
+
+  <p class="small">By submitting, you agree I can email you back about the audit. No marketing list. No pitch.</p>
+</form>
+
+<div id="success" style="display:none">
+<h2>✓ Got it!</h2>
+<p>Will email you within 48 hours. If you don't see it, check spam.</p>
+<p>Want a faster reply? Email <a href="mailto:hello@localbiz.ai">hello@localbiz.ai</a> directly.</p>
+</div>
+
+<script>
+// GitHub Issues API needs auth — instead, redirect to email client
+document.getElementById("audit-form").addEventListener("submit", function(e) {
+  e.preventDefault();
+  const biz = document.getElementById("biz").value;
+  const email = document.getElementById("email").value;
+  const city = document.getElementById("city").value;
+  const industry = document.getElementById("industry").value;
+  const website = document.getElementById("website").value;
+  const notes = document.getElementById("notes").value;
+  const subject = encodeURIComponent(`Audit request: ${biz} (${city})`);
+  const body = encodeURIComponent(`Business: ${biz}\nCity: ${city}\nIndustry: ${industry}\nWebsite: ${website}\nEmail: ${email}\nNotes: ${notes}`);
+  window.location.href = `mailto:hello@localbiz.ai?subject=${subject}&body=${body}`;
+});
+</script>
+</body>
+</html>

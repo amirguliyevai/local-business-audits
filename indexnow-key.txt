@@ -1,0 +1,3 @@
+# IndexNow API key — get one from https://www.indexnow.org/
+# Then submit URLs via:
+# curl "https://api.indexnow.org/indexnow?url=https://amirguliyevai.github.io/local-business-audits/anthonyscarwash-audit.html&key=YOUR_KEY"
