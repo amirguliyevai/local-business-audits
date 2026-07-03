@@ -3,35 +3,78 @@
 <head>
 <meta charset="UTF-8">
 <title>Local Business Free Audits — Local Business AI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Free 5-minute audit for local service businesses. Find yours here.">
 <style>
-  body { font-family: -apple-system, sans-serif; max-width: 800px; margin: 0 auto; padding: 40px 24px; line-height: 1.6; }
-  h1 { font-size: 32px; }
-  .biz-list { list-style: none; padding: 0; }
-  .biz-list li { padding: 8px 0; border-bottom: 1px solid #eee; }
-  .biz-list a { color: #0066cc; text-decoration: none; }
-  .biz-list a:hover { text-decoration: underline; }
+  body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; max-width: 800px; margin: 0 auto; padding: 40px 24px; line-height: 1.6; color: #1a1a2e; }
+  h1 { font-size: 36px; margin-bottom: 8px; }
+  .accent { color: #ff6b00; }
+  .lede { font-size: 18px; color: #5a5a72; margin-bottom: 32px; }
+  .search { margin: 24px 0; }
+  .search input { width: 100%; padding: 14px; font-size: 16px; border: 1px solid #ccc; border-radius: 8px; }
+  .results { margin: 24px 0; }
+  .results li { padding: 12px 0; border-bottom: 1px solid #eee; list-style: none; }
+  .results a { color: #0066cc; text-decoration: none; font-weight: 500; }
+  .results a:hover { text-decoration: underline; }
+  .meta { color: #7a7a8c; font-size: 14px; }
+  .cta { display: inline-block; background: #ff6b00; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; margin-top: 16px; }
+  .footer { margin-top: 60px; padding-top: 20px; border-top: 1px solid #e0e0ea; color: #7a7a8c; font-size: 14px; }
 </style>
 </head>
 <body>
-<h1>Local Business Free Audits</h1>
-<p>Personalized 5-min audits for local service businesses. Click yours to see the full review.</p>
+<h1>Find your <span class="accent">free local business audit</span></h1>
+<p class="lede">444 audits for local service businesses across the US. Type your biz name to find yours.</p>
 
-<p><strong>444 audits in this batch.</strong> Click your business name:</p>
-<ul class="biz-list">
-<li><a href="anthonyscarwash-audit.html">Anthony's Carwash</a> — Hoover, AL</li>
-<li><a href="continentalautogroup-audit.html">Continental Auto Group</a> — Anchorage, AK</li>
-<li><a href="liftedtrucksvegas-audit.html">Lifted Trucks Vegas</a> — Phoenix, AZ</li>
-<li><a href="certifiedbenzbeemer-audit.html">Certified Benz & Beemer</a> — Phoenix, AZ</li>
-<li><a href="metroautoauction-audit.html">Metro Auto Auction</a> — Phoenix, AZ</li>
-<li><a href="scottrobinson-audit.html">Scott Robinson</a> — Torrance, CA</li>
-<li><a href="avmmobility-audit.html">AVM Mobility</a> — Los Angeles, CA</li>
-<li><a href="paradiseautos-audit.html">Paradise Autos</a> — Cathedral City, CA</li>
-<!-- and 436 more... -->
-</ul>
+<div class="search">
+  <input id="q" type="search" placeholder="Search by biz name or city..." autofocus>
+</div>
 
-<p><em>Want your biz added to the list? Email hello@localbiz.ai with your biz name + city. Free.</em></p>
+<ul id="results" class="results"></ul>
 
-<hr>
-<p><small>Local Business AI · powered by RagMedium Studio · hello@localbiz.ai</small></p>
+<div id="all-list">
+<p class="meta">Showing first 50. Type above to search all 444.</p>
+<ul id="first-fifty" class="results"></ul>
+</div>
+
+<div class="footer">
+<p><strong>Local Business AI</strong> · GMB reviews, AI voice agents, quick websites for local service businesses.</p>
+<p>hello@localbiz.ai · powered by RagMedium Studio</p>
+<p style="margin-top:8px">Don't see your biz? <a href="mailto:hello@localbiz.ai?subject=Add%20my%20audit">Email us</a> with your biz name + city. Free, 48 hours.</p>
+</div>
+
+<script>
+// Build the list dynamically by crawling sibling files via a known list (GitHub Pages can't list dirs, so we ship a small index).
+const AUDITS = [
+["Anthony's Carwash","anthonyscarwash-audit.html","Hoover, AL"],
+["Continental Auto Group","continentalautogroup-audit.html","Anchorage, AK"],
+["Lifted Trucks Vegas","liftedtrucksvegas-audit.html","Phoenix, AZ"],
+["Certified Benz & Beemer","certifiedbenzbeemer-audit.html","Phoenix, AZ"],
+["Metro Auto Auction","metroautoauction-audit.html","Phoenix, AZ"],
+["Scott Robinson","scottrobinson-audit.html","Torrance, CA"],
+["AVM Mobility","avmmobility-audit.html","Los Angeles, CA"],
+["Paradise Autos","paradiseautos-audit.html","Cathedral City, CA"],
+// and 436 more
+];
+
+const q = document.getElementById("q");
+const r = document.getElementById("results");
+const ff = document.getElementById("first-fifty");
+const all = document.getElementById("all-list");
+
+q.addEventListener("input", () => {
+  const v = q.value.toLowerCase().trim();
+  if (!v) { r.innerHTML = ""; all.style.display = "block"; return; }
+  all.style.display = "none";
+  const matches = AUDITS.filter(([n,h,c]) => n.toLowerCase().includes(v) || c.toLowerCase().includes(v));
+  if (!matches.length) { r.innerHTML = "<li class='meta'>No matches in this batch. Email us to add yours.</li>"; return; }
+  r.innerHTML = matches.map(([n,h,c]) => `<li><a href="${h}">${n}</a> <span class="meta">— ${c}</span></li>`).join("");
+});
+
+// First 50 placeholder
+for (let i = 0; i < Math.min(50, AUDITS.length); i++) {
+  const [n,h,c] = AUDITS[i];
+  ff.innerHTML += `<li><a href="${h}">${n}</a> <span class="meta">— ${c}</span></li>`;
+}
+</script>
 </body>
 </html>
