@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://amirguliyevai.github.io/local-business-audits/sitemap.xml
